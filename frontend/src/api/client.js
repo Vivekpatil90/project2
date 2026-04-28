@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL || 'https://marshall-backend4.onrender.com'}/api`,
-  headers: { 'Content-Type': 'application/json' },
+export default axios.create({
+  baseURL: import.meta.env.VITE_API_URL,  // for Vite
+  // baseURL: process.env.REACT_APP_API_URL,  // for CRA
+  withCredentials: true,
 });
 
 // Attach JWT from localStorage on every request

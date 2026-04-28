@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
@@ -13,14 +14,12 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
 connectDB();
-
+mongoose.connect(process.env.MONGODB_URI);
 const app = express();
-app.use(cors({
-  origin: "https://verdant-frontend2.onrender.com/",
-  credentials: true
-}));
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(express.json({ limit: '5mb' }));
 app.use(morgan('dev'));
+app.get("/api/health", (_, res) => res.json({ ok: true }));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', service: 'verdant-api' }));
 
